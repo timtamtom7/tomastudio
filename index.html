@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Toma Studio — Digital Product Design & Development</title>
+  <meta name="description" content="Toma Studio designs and builds digital products for ambitious brands. Websites, web apps, e-commerce, and brand identity." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0a;
+      --bg-2: #111111;
+      --bg-3: #1a1a1a;
+      --surface: #222222;
+      --border: #2a2a2a;
+      --text: #f0ede8;
+      --text-muted: #888;
+      --text-subtle: #555;
+      --accent: #c9a84c;
+      --accent-light: #e8c96a;
+      --accent-dim: rgba(201,168,76,0.12);
+      --radius: 8px;
+      --max-w: 1100px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Playfair Display', serif;
+      line-height: 1.2;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(10,10,10,0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--bg) !important;
+      background: var(--accent);
+      padding: 8px 20px;
+      border-radius: var(--radius);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .nav-cta:hover { background: var(--accent-light); transform: translateY(-1px); }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .nav-hamburger span { width: 22px; height: 2px; background: var(--text); border-radius: 2px; }
+
+    /* ─── MOBILE NAV ─── */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 99;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-size: 22px; font-family: 'Playfair Display', serif; color: var(--text); }
+    .mobile-menu .mobile-close {
+      position: absolute; top: 20px; right: 24px;
+      font-size: 32px; color: var(--text-muted); cursor: pointer;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 64px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-content { max-width: 780px; }
+    .hero-eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 20px;
+      letter-spacing: -0.03em;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .hero p {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 560px;
+      margin-bottom: 40px;
+      line-height: 1.7;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 600;
+      font-size: 14px;
+      padding: 14px 28px;
+      border-radius: var(--radius);
+      letter-spacing: 0.02em;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      background: var(--accent-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(201,168,76,0.25);
+    }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-weight: 500;
+      font-size: 14px;
+      padding: 14px 28px;
+      border-radius: var(--radius);
+      transition: border-color 0.2s, color 0.2s, transform 0.15s;
+    }
+    .btn-secondary:hover {
+      border-color: var(--text-muted);
+      color: var(--text);
+      transform: translateY(-2px);
+    }
+    .hero-scroll {
+      margin-top: 80px;
+      font-size: 12px;
+      color: var(--text-subtle);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ─── DIVIDER ─── */
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0;
+    }
+
+    /* ─── SECTIONS ─── */
+    .section {
+      padding: 100px 0;
+    }
+    .section-sm { padding: 60px 0; }
+    .section-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+    .section-title {
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+    .section-desc {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 560px;
+      line-height: 1.75;
+    }
+    .section-header { margin-bottom: 56px; }
+
+    /* ─── SERVICES ─── */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .service-card {
+      background: var(--bg-2);
+      padding: 36px 32px;
+      transition: background 0.25s;
+    }
+    .service-card:hover { background: var(--bg-3); }
+    .service-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--accent-dim);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+    .service-card h3 {
+      font-size: 17px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+    .service-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    .service-meta {
+      display: flex;
+      gap: 16px;
+      font-size: 12px;
+      color: var(--text-subtle);
+    }
+    .service-meta span { display: flex; align-items: center; gap: 4px; }
+    .service-meta span::before {
+      content: '';
+      width: 4px; height: 4px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    /* ─── PORTFOLIO ─── */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .portfolio-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+      text-decoration: none;
+      display: block;
+    }
+    .portfolio-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+    }
+    .portfolio-thumb {
+      width: 100%;
+      aspect-ratio: 16/10;
+      background: var(--bg-3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      color: var(--text-subtle);
+      position: relative;
+      overflow: hidden;
+    }
+    .portfolio-thumb .thumb-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .portfolio-card-body { padding: 24px; }
+    .portfolio-card-body h3 {
+      font-size: 18px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .portfolio-card-body .p-tag {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .portfolio-card-body .p-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .portfolio-card-body .p-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: color 0.2s, gap 0.2s;
+    }
+    .portfolio-card:hover .p-link { color: var(--accent); gap: 10px; }
+
+    /* ─── CLIENT RESULTS ─── */
+    .results-section { background: var(--bg-2); }
+    .results-intro { margin-bottom: 48px; }
+    .results-flow {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+    .result-step {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .result-step-num {
+      width: 36px;
+      height: 36px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+    .result-step-content h4 {
+      font-size: 15px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+    .result-step-content p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .result-arrow { color: var(--text-subtle); font-size: 20px; }
+    .results-honest {
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-top: 16px;
+    }
+    .results-honest p {
+      font-size: 16px;
+      color: var(--text-muted);
+      line-height: 1.75;
+    }
+    .results-honest strong { color: var(--text); font-weight: 600; }
+
+    /* ─── TESTIMONIALS ─── */
+    .testimonials-placeholder {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 56px 48px;
+      text-align: center;
+    }
+    .testimonials-placeholder .tp-icon {
+      width: 56px;
+      height: 56px;
+      background: var(--accent-dim);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-size: 24px;
+    }
+    .testimonials-placeholder h3 {
+      font-size: 24px;
+      font-family: 'Playfair Display', serif;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+    .testimonials-placeholder p {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 480px;
+      margin: 0 auto 32px;
+      line-height: 1.7;
+    }
+    .testimonials-placeholder .cta-email {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 700;
+      font-size: 14px;
+      padding: 14px 28px;
+      border-radius: var(--radius);
+      letter-spacing: 0.02em;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .testimonials-placeholder .cta-email:hover {
+      background: var(--accent-light);
+      transform: translateY(-2px);
+    }
+
+    /* ─── HOW IT WORKS ─── */
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .how-step {
+      background: var(--bg-2);
+      padding: 36px 28px;
+    }
+    .how-num {
+      font-size: 48px;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      color: var(--accent-dim);
+      color: rgba(201,168,76,0.2);
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+    .how-step h3 {
+      font-size: 16px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .how-step p { font-size: 14px; color: var(--text-muted); line-height: 1.65; }
+
+    /* ─── CTA BAND ─── */
+    .cta-band {
+      background: var(--accent);
+      padding: 80px 0;
+      text-align: center;
+    }
+    .cta-band h2 {
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 700;
+      color: var(--bg);
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+    .cta-band p {
+      font-size: 16px;
+      color: rgba(10,10,10,0.65);
+      margin-bottom: 36px;
+    }
+    .btn-dark {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg);
+      color: var(--text);
+      font-weight: 700;
+      font-size: 14px;
+      padding: 16px 36px;
+      border-radius: var(--radius);
+      letter-spacing: 0.02em;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-dark:hover { background: #222; transform: translateY(-2px); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--bg-2);
+      border-top: 1px solid var(--border);
+      padding: 64px 0 40px;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+    .footer-brand .nav-logo { margin-bottom: 16px; display: block; }
+    .footer-brand p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 280px;
+    }
+    .footer-col h4 {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-subtle);
+      margin-bottom: 20px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .footer-col ul a {
+      font-size: 14px;
+      color: var(--text-muted);
+      transition: color 0.2s;
+    }
+    .footer-col ul a:hover { color: var(--text); }
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-bottom p { font-size: 12px; color: var(--text-subtle); }
+    .footer-social { display: flex; gap: 16px; }
+    .footer-social a {
+      font-size: 13px;
+      color: var(--text-subtle);
+      transition: color 0.2s;
+    }
+    .footer-social a:hover { color: var(--accent); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+      .how-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      .services-grid { grid-template-columns: 1fr; }
+      .portfolio-grid { grid-template-columns: 1fr; }
+      .how-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 36px; }
+      .hero p { font-size: 16px; }
+      .section { padding: 64px 0; }
+      .testimonials-placeholder { padding: 36px 24px; }
+      .results-flow { flex-direction: column; align-items: flex-start; }
+      .result-arrow { display: none; }
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.6s ease forwards; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="container nav-inner">
+      <a href="#" class="nav-logo">Toma<span>.</span></a>
+      <ul class="nav-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#how-it-works">Process</a></li>
+        <li><a href="mailto:hello@tomastudio.org" class="nav-cta">Start a Project</a></li>
+      </ul>
+      <div class="nav-hamburger" onclick="document.querySelector('.mobile-menu').classList.add('open')">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <span class="mobile-close" onclick="this.parentElement.classList.remove('open')">&times;</span>
+    <a href="#services" onclick="this.parentElement.classList.remove('open')">Services</a>
+    <a href="#work" onclick="this.parentElement.classList.remove('open')">Work</a>
+    <a href="#how-it-works" onclick="this.parentElement.classList.remove('open')">Process</a>
+    <a href="mailto:hello@tomastudio.org" onclick="this.parentElement.classList.remove('open')">Start a Project</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-eyebrow fade-up">Toma Studio — Hong Kong</div>
+        <h1 class="fade-up" style="animation-delay:0.1s">
+          We design &amp; build<br /><em>digital products</em>
+        </h1>
+        <p class="fade-up" style="animation-delay:0.2s">
+          Brand identity, websites, web apps, and e-commerce for ambitious brands. From concept to launch — we handle the whole thing.
+        </p>
+        <div class="hero-actions fade-up" style="animation-delay:0.3s">
+          <a href="mailto:hello@tomastudio.org" class="btn-primary">
+            Start a project
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#services" class="btn-secondary">How it works</a>
+        </div>
+        <div class="hero-scroll fade-up" style="animation-delay:0.4s">↓ Services, Work, Process</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- SERVICES -->
+  <section class="section" id="services">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">What We Do</div>
+        <h2 class="section-title">End-to-end product development</h2>
+        <p class="section-desc">From brand identity to launch. We work with a select number of clients each quarter to build products that actually perform.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">&#9673;</div>
+          <h3>Websites</h3>
+          <p>Marketing sites, landing pages, company blogs. Clean, fast, built to convert.</p>
+          <div class="service-meta"><span>2–4 weeks</span><span>From $5k</span></div>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">&#9633;</div>
+          <h3>Web Apps</h3>
+          <p>Dashboards, SaaS platforms, internal tools. Built to scale with your business.</p>
+          <div class="service-meta"><span>4–8 weeks</span><span>From $12k</span></div>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">&#9675;</div>
+          <h3>Mobile Apps</h3>
+          <p>iOS, Android, and cross-platform apps. From concept to submission-ready.</p>
+          <div class="service-meta"><span>6–10 weeks</span><span>From $18k</span></div>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">&#9679;</div>
+          <h3>E-Commerce</h3>
+          <p>Online stores, marketplaces, checkout flows. Built on Shopify and custom platforms.</p>
+          <div class="service-meta"><span>3–6 weeks</span><span>From $8k</span></div>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">&#9672;</div>
+          <h3>Brand Identity</h3>
+          <p>Logo, visual language, brand guidelines, and design systems that scale.</p>
+          <div class="service-meta"><span>2–4 weeks</span><span>From $4k</span></div>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">&#9733;</div>
+          <h3>Custom Projects</h3>
+          <p>Web3, AI integrations, unique technical challenges. Let's talk about it.</p>
+          <div class="service-meta"><span>Custom</span><span>Custom</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- PORTFOLIO -->
+  <section class="section" id="work">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Selected Work</div>
+        <h2 class="section-title">Projects we're proud of</h2>
+        <p class="section-desc">A selection of recent client work across e-commerce, branding, web apps, and digital products.</p>
+      </div>
+      <div class="portfolio-grid">
+
+        <!-- Moochu -->
+        <a href="https://moochu.com.au" target="_blank" rel="noopener" class="portfolio-card">
+          <div class="portfolio-thumb" style="background:#1a1a2e;">
+            <span class="thumb-label">Moochu</span>
+          </div>
+          <div class="portfolio-card-body">
+            <div class="p-tag">Web App</div>
+            <h3>Moochu</h3>
+            <p class="p-desc">Wave-sharing app design and build. A creative platform for audio and visual expression.</p>
+            <div class="p-link">moochu.com.au <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg></div>
+          </div>
+        </a>
+
+        <!-- Purely -->
+        <a href="https://purely.com.au" target="_blank" rel="noopener" class="portfolio-card">
+          <div class="portfolio-thumb" style="background:#1c1c1c;">
+            <span class="thumb-label">Purely</span>
+          </div>
+          <div class="portfolio-card-body">
+            <div class="p-tag">Website</div>
+            <h3>Purely</h3>
+            <p class="p-desc">Brand and website for a wellness-focused Australian brand. Clean, editorial design.</p>
+            <div class="p-link">purely.com.au <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg></div>
+          </div>
+        </a>
+
+        <!-- Casa Duniya -->
+        <a href="https://casaddunia.com" target="_blank" rel="noopener" class="portfolio-card">
+          <div class="portfolio-thumb" style="background:#2a1f1a;">
+            <span class="thumb-label">Casa Duniya</span>
+          </div>
+          <div class="portfolio-card-body">
+            <div class="p-tag">E-Commerce</div>
+            <h3>Casa Duniya</h3>
+            <p class="p-desc">Shopify e-commerce build for an international homeware brand. Custom theme, lifestyle photography integration.</p>
+            <div class="p-link">casaddunia.com <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg></div>
+          </div>
+        </a>
+
+        <!-- DiDi Jewellery -->
+        <a href="https://didijewellery.com" target="_blank" rel="noopener" class="portfolio-card">
+          <div class="portfolio-thumb" style="background:#1a1a1a;">
+            <span class="thumb-label">DiDi Jewellery</span>
+          </div>
+          <div class="portfolio-card-body">
+            <div class="p-tag">E-Commerce</div>
+            <h3>DiDi Jewellery</h3>
+            <p class="p-desc">Bespoke jewellery e-commerce site. Luxury positioning, custom Shopify build with editorial aesthetic.</p>
+            <div class="p-link">didijewellery.com <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg></div>
+          </div>
+        </a>
+
+        <!-- Optimise Operations -->
+        <a href="https://optimiseoperations.com" target="_blank" rel="noopener" class="portfolio-card">
+          <div class="portfolio-thumb" style="background:#0f1a2e;">
+            <span class="thumb-label">Optimise</span>
+          </div>
+          <div class="portfolio-card-body">
+            <div class="p-tag">Branding + Web</div>
+            <h3>Optimise Operations</h3>
+            <p class="p-desc">Full brand identity and web presence for a B2B operations consultancy. Strategic positioning and custom web build.</p>
+            <div class="p-link">optimiseoperations.com <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg></div>
+          </div>
+        </a>
+
+        <!-- Ami Amico -->
+        <a href="https://amiamico.co" target="_blank" rel="noopener" class="portfolio-card">
+          <div class="portfolio-thumb" style="background:#1e1e1e;">
+            <span class="thumb-label">Ami Amico</span>
+          </div>
+          <div class="portfolio-card-body">
+            <div class="p-tag">Brand + Web</div>
+            <h3>Ami Amico</h3>
+            <p class="p-desc">Brand identity and Shopify e-commerce build. Warm, lifestyle-focused aesthetic for a mindful accessories brand.</p>
+            <div class="p-link">amiamico.co <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg></div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- CLIENT RESULTS -->
+  <section class="section results-section" id="results">
+    <div class="container">
+      <div class="section-header results-intro">
+        <div class="section-eyebrow">What We Build</div>
+        <h2 class="section-title">Brand identity &rarr; web presence &rarr; conversion systems</h2>
+        <p class="section-desc">We've worked with brands across e-commerce, lifestyle, tech, and professional services. We take on a select number of projects each quarter to give each one the attention it deserves.</p>
+      </div>
+      <div class="results-flow">
+        <div class="result-step">
+          <div class="result-step-num">1</div>
+          <div class="result-step-content">
+            <h4>Brand Identity</h4>
+            <p>Logo, visual language, guidelines</p>
+          </div>
+        </div>
+        <span class="result-arrow">&#8594;</span>
+        <div class="result-step">
+          <div class="result-step-num">2</div>
+          <div class="result-step-content">
+            <h4>Web Presence</h4>
+            <p>Website, app, or e-commerce store</p>
+          </div>
+        </div>
+        <span class="result-arrow">&#8594;</span>
+        <div class="result-step">
+          <div class="result-step-num">3</div>
+          <div class="result-step-content">
+            <h4>Conversion Systems</h4>
+            <p>Funnels, SEO, performance optimisation</p>
+          </div>
+        </div>
+      </div>
+      <div class="results-honest">
+        <p>We've worked with <strong>e-commerce brands, professional services firms, and lifestyle businesses</strong> — helping each one build a digital presence that actually works. We take on a select number of projects each quarter so every client gets real focus and attention.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- TESTIMONIALS -->
+  <section class="section" id="testimonials">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Client Feedback</div>
+        <h2 class="section-title">What clients say</h2>
+      </div>
+      <div class="testimonials-placeholder">
+        <div class="tp-icon">&#128172;</div>
+        <h3>We're refreshing our site with real client feedback</h3>
+        <p>If you've worked with us and have a moment to share your thoughts, we'd love to feature your words here. Have a project in mind? Let's talk.</p>
+        <a href="mailto:hello@tomastudio.org" class="cta-email">
+          hello@tomastudio.org
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- HOW IT WORKS -->
+  <section class="section" id="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Process</div>
+        <h2 class="section-title">How it works</h2>
+        <p class="section-desc">A clear, structured process from first conversation to final delivery. No surprises, no black boxes.</p>
+      </div>
+      <div class="how-grid">
+        <div class="how-step">
+          <div class="how-num">01</div>
+          <h3>Discovery</h3>
+          <p>We start with a conversation. Your goals, your audience, your constraints. We listen carefully before we say anything.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-num">02</div>
+          <h3>Strategy &amp; Direction</h3>
+          <p>Brand positioning, information architecture, and a creative brief. We align on where we're going before we start designing.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-num">03</div>
+          <h3>Design &amp; Build</h3>
+          <p>Iterative design with your feedback at every stage. Then full development — clean code, built to last.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-num">04</div>
+          <h3>Launch &amp; Support</h3>
+          <p>We don't disappear at launch. We support you post-go-live and offer ongoing retainers for continued work.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BAND -->
+  <section class="cta-band">
+    <div class="container">
+      <h2>Ready to build something great?</h2>
+      <p>We take on a select number of projects each quarter. Let's see if we're a fit.</p>
+      <a href="mailto:hello@tomastudio.org" class="btn-dark">
+        Start a conversation &rarr;
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="#" class="nav-logo">Toma<span>.</span></a>
+          <p>Digital product studio based in Hong Kong. We design and build for ambitious brands worldwide.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Studio</h4>
+          <ul>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#work">Work</a></li>
+            <li><a href="#how-it-works">Process</a></li>
+            <li><a href="mailto:hello@tomastudio.org">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a></li>
+            <li><a href="mailto:hello@tomastudio.org">hello@tomastudio.org</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 tomastudio.org &mdash; TOMA GROUP LIMITED. All Rights Reserved.</p>
+        <div class="footer-social">
+          <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
