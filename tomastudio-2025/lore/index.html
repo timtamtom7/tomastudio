@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lore — Life Thread | AI Voice Journal by Toma Studio</title>
+  <meta name="description" content="Lore finds the recurring themes woven through your moments — the threads that make up your life story. Private, on-device AI journal for iPhone." />
+  <meta property="og:title" content="Lore — Life Thread" />
+  <meta property="og:description" content="Your life already has threads. Lore finds them for you. Private, on-device AI journal for iPhone." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0a; --bg-2: #111111; --bg-3: #1a1a1a;
+      --surface: #222222; --border: #2a2a2a;
+      --text: #f0ede8; --text-muted: #888; --text-subtle: #555;
+      --accent: #c9a84c; --accent-light: #e8c96a; --accent-dim: rgba(201,168,76,0.12);
+      --radius: 8px; --max-w: 1100px;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+    h1, h2, h3 { font-family: 'Playfair Display', serif; line-height: 1.2; }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,10,10,0.88); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; letter-spacing: -0.02em; }
+    .nav-logo span { color: var(--accent); }
+    .nav-right { display: flex; align-items: center; gap: 24px; }
+    .nav-link { font-size: 13px; font-weight: 500; color: var(--text-muted); transition: color 0.2s; }
+    .nav-link:hover { color: var(--text); }
+    .nav-dl { display: inline-flex; align-items: center; gap: 6px; background: var(--accent); color: var(--bg); font-size: 12px; font-weight: 700; padding: 8px 16px; border-radius: var(--radius); letter-spacing: 0.04em; text-transform: uppercase; transition: background 0.2s, transform 0.15s; }
+    .nav-dl:hover { background: var(--accent-light); transform: translateY(-1px); }
+    .hero { min-height: 100vh; display: flex; align-items: center; padding-top: 64px; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; top: -20%; right: -5%; width: 700px; height: 700px; background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 65%); pointer-events: none; }
+    .hero-inner { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 80px; }
+    .hero-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(44px, 6.5vw, 78px); font-weight: 700; color: var(--text); margin-bottom: 22px; letter-spacing: -0.03em; }
+    .hero h1 em { font-style: italic; color: var(--accent); }
+    .hero-sub { font-size: 19px; color: var(--text-muted); max-width: 520px; margin-bottom: 40px; line-height: 1.72; }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 56px; }
+    .btn-appstore { display: inline-flex; align-items: center; gap: 10px; background: var(--text); color: var(--bg); font-size: 14px; font-weight: 700; padding: 14px 28px; border-radius: 12px; transition: background 0.2s, transform 0.15s, box-shadow 0.2s; }
+    .btn-appstore:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 10px 28px rgba(201,168,76,0.3); }
+    .btn-appstore-text { display: flex; flex-direction: column; }
+    .btn-appstore-text small { font-size: 10px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.7; }
+    .btn-appstore-text span { font-size: 15px; font-weight: 700; line-height: 1; margin-top: 2px; }
+    .hero-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+    .pill { display: inline-flex; align-items: center; gap: 6px; background: var(--bg-3); border: 1px solid var(--border); font-size: 12px; font-weight: 500; color: var(--text-muted); padding: 6px 12px; border-radius: 100px; }
+    .pill-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+    .phone-wrap { width: 220px; height: 440px; background: var(--bg-3); border: 1px solid var(--border); border-radius: 36px; position: relative; overflow: hidden; box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04) inset; animation: float 5s ease-in-out infinite; }
+    .phone-notch { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 80px; height: 24px; background: var(--bg); border-radius: 100px; z-index: 1; }
+    .phone-screen { position: absolute; inset: 0; display: flex; flex-direction: column; padding: 56px 16px 20px; background: linear-gradient(180deg, #0d0d0d 0%, #111111 100%); }
+    .ps-header { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--text); margin-bottom: 14px; }
+    .ps-entry { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; }
+    .ps-entry-date { font-size: 9px; color: var(--accent); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+    .ps-entry-text { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+    .ps-thread { margin-top: 10px; padding: 10px 12px; background: var(--accent-dim); border: 1px solid rgba(201,168,76,0.2); border-radius: 10px; }
+    .ps-thread-label { font-size: 9px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 3px; }
+    .ps-thread-text { font-size: 10px; color: var(--text-muted); line-height: 1.4; }
+    .section-divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+    .section { padding: 100px 0; }
+    .section-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+    .section-title { font-size: clamp(28px, 4vw, 44px); font-weight: 700; color: var(--text); margin-bottom: 16px; letter-spacing: -0.02em; }
+    .section-desc { font-size: 16px; color: var(--text-muted); max-width: 560px; line-height: 1.75; }
+    .section-header { margin-bottom: 60px; }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .feature-card { background: var(--bg-2); padding: 40px 32px; transition: background 0.25s; }
+    .feature-card:hover { background: var(--bg-3); }
+    .feature-icon { width: 48px; height: 48px; background: var(--accent-dim); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 22px; font-size: 22px; }
+    .feature-card h3 { font-size: 18px; font-family: 'Inter', sans-serif; font-weight: 600; color: var(--text); margin-bottom: 10px; }
+    .feature-card p { font-size: 14px; color: var(--text-muted); line-height: 1.65; }
+    .hiw-section { background: var(--bg-2); }
+    .hiw-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: var(--border); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .hiw-step { background: var(--bg-3); padding: 36px 28px; }
+    .hiw-num { font-size: 48px; font-family: 'Playfair Display', serif; font-weight: 700; color: rgba(201,168,76,0.15); line-height: 1; margin-bottom: 20px; }
+    .hiw-step h3 { font-size: 15px; font-family: 'Inter', sans-serif; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+    .hiw-step p { font-size: 13px; color: var(--text-muted); line-height: 1.65; }
+    .privacy-block { background: var(--bg-3); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: var(--radius); padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    .privacy-block h3 { font-size: 26px; color: var(--text); margin-bottom: 14px; }
+    .privacy-block p { font-size: 15px; color: var(--text-muted); line-height: 1.75; }
+    .privacy-checks { display: flex; flex-direction: column; gap: 14px; }
+    .privacy-check { display: flex; align-items: flex-start; gap: 14px; }
+    .pcheck-icon { width: 28px; height: 28px; background: var(--accent-dim); border: 1px solid rgba(201,168,76,0.25); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; margin-top: 1px; }
+    .pcheck-text h4 { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+    .pcheck-text p { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin: 0; }
+    .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 720px; }
+    .price-card { background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; padding: 36px 32px; transition: border-color 0.25s, transform 0.2s; }
+    .price-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+    .price-card.featured { border-color: var(--accent); background: var(--bg-3); position: relative; }
+    .price-badge { position: absolute; top: -12px; left: 24px; background: var(--accent); color: var(--bg); font-size: 10px; font-weight: 700; padding: 4px 12px; border-radius: 100px; letter-spacing: 0.08em; text-transform: uppercase; }
+    .price-name { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px; }
+    .price-amount { font-size: 40px; font-family: 'Playfair Display', serif; color: var(--text); line-height: 1; margin-bottom: 4px; }
+    .price-amount small { font-size: 16px; font-family: 'Inter', sans-serif; font-weight: 400; color: var(--text-muted); }
+    .price-period { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+    .price-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+    .price-features li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--text-muted); }
+    .price-features li::before { content: ''; width: 5px; height: 5px; background: var(--accent); border-radius: 50%; flex-shrink: 0; }
+    .btn-price { display: block; width: 100%; text-align: center; background: var(--accent); color: var(--bg); font-size: 14px; font-weight: 700; padding: 13px; border-radius: var(--radius); transition: background 0.2s; }
+    .btn-price:hover { background: var(--accent-light); }
+    .btn-price-outline { display: block; width: 100%; text-align: center; border: 1px solid var(--border); color: var(--text-muted); font-size: 14px; font-weight: 500; padding: 13px; border-radius: var(--radius); transition: border-color 0.2s, color 0.2s; }
+    .btn-price-outline:hover { border-color: var(--accent); color: var(--text); }
+    .pricing-note { font-size: 13px; color: var(--text-subtle); margin-top: 20px; }
+    .cta-band { background: var(--accent); padding: 80px 0; text-align: center; }
+    .cta-band h2 { font-size: clamp(28px, 4vw, 48px); font-weight: 700; color: var(--bg); margin-bottom: 14px; letter-spacing: -0.02em; }
+    .cta-band p { font-size: 16px; color: rgba(10,10,10,0.6); margin-bottom: 36px; }
+    .btn-dark { display: inline-flex; align-items: center; gap: 10px; background: var(--bg); color: var(--text); font-weight: 700; font-size: 14px; padding: 16px 36px; border-radius: var(--radius); transition: background 0.2s, transform 0.15s; }
+    .btn-dark:hover { background: #1a1a1a; transform: translateY(-2px); }
+    footer { background: var(--bg-2); border-top: 1px solid var(--border); padding: 48px 0 32px; }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; }
+    .footer-logo span { color: var(--accent); }
+    .footer-tagline { font-size: 13px; color: var(--text-subtle); margin-top: 6px; }
+    .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+    .footer-links a { font-size: 13px; color: var(--text-muted); transition: color 0.2s; }
+    .footer-links a:hover { color: var(--accent); }
+    .footer-bottom { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-subtle); }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-up { animation: fadeUp 0.65s ease forwards; }
+    @media (max-width: 900px) { .hero-inner { grid-template-columns: 1fr; } .hero-phone { display: flex; justify-content: center; } .features-grid { grid-template-columns: repeat(2, 1fr); } .hiw-grid { grid-template-columns: repeat(2, 1fr); } .privacy-block { grid-template-columns: 1fr; } }
+    @media (max-width: 640px) { .features-grid, .hiw-grid { grid-template-columns: 1fr; } .pricing-grid { grid-template-columns: 1fr; max-width: 100%; } .section { padding: 64px 0; } .nav-link { display: none; } }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="container nav-inner">
+      <div style="display:flex;align-items:center;gap:20px;">
+        <a href="https://tomastudio.org" class="nav-logo">Toma<span>.</span></a>
+        <span style="color:var(--border);font-size:18px;">/</span>
+        <span style="font-size:13px;font-weight:600;color:var(--text);">Lore</span>
+      </div>
+      <div class="nav-right">
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#privacy" class="nav-link">Privacy</a>
+        <a href="#pricing" class="nav-link">Pricing</a>
+        <a href="support" class="nav-link">Support</a>
+        <a href="https://apps.apple.com/app/id6761324442" target="_blank" rel="noopener" class="nav-dl">Download</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <div>
+          <div class="hero-eyebrow fade-up">iOS App &mdash; Free to Download</div>
+          <h1 class="fade-up" style="animation-delay:0.1s">Your life already<br />has <em>threads.</em></h1>
+          <p class="hero-sub fade-up" style="animation-delay:0.2s">Lore finds the recurring themes woven through your moments &mdash; the patterns that shape who you are. Speak freely. Your journal entries never leave your iPhone.</p>
+          <div class="hero-actions fade-up" style="animation-delay:0.3s">
+            <a href="https://apps.apple.com/app/id6761324442" target="_blank" rel="noopener" class="btn-appstore">
+              <svg width="22" height="22" viewBox="0 0 814 1000" fill="currentColor"><path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 790.7 0 663 0 541.8c0-207.5 135.4-317.3 269-317.3 70.1 0 128.4 46.4 172.5 46.4 42.8 0 109.8-49 192.3-49 30.7 0 133.7 2.6 198.3 99zM554.1 158.4c27.1-33.1 45.8-78.7 45.8-124.2 0-6.4-.6-12.9-1.9-18.1-43.4 1.6-95.6 29.2-127 66.5-24.6 27.7-47.5 72.7-47.5 118.9 0 7.1 1.3 14.2 1.9 16.4 2.6.5 6.4.6 10.3.6 38.4 0 86.7-26 118.4-60.1z"/></svg>
+              <div class="btn-appstore-text">
+                <small>Download on the</small>
+                <span>App Store</span>
+              </div>
+            </a>
+          </div>
+          <div class="hero-pills fade-up" style="animation-delay:0.4s">
+            <span class="pill"><span class="pill-dot"></span>On-device AI</span>
+            <span class="pill"><span class="pill-dot"></span>Private by design</span>
+            <span class="pill"><span class="pill-dot"></span>Voice journaling</span>
+            <span class="pill"><span class="pill-dot"></span>iOS 18+</span>
+          </div>
+        </div>
+        <div class="hero-phone fade-up" style="animation-delay:0.3s">
+          <div class="phone-wrap">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="ps-header">Today</div>
+              <div class="ps-entry">
+                <div class="ps-entry-date">This morning</div>
+                <div class="ps-entry-text">Walked past the coffee shop again. Felt that familiar pull&hellip;</div>
+              </div>
+              <div class="ps-entry">
+                <div class="ps-entry-date">Yesterday</div>
+                <div class="ps-entry-text">Long call with Mum. Something shifted after we hung up.</div>
+              </div>
+              <div class="ps-thread">
+                <div class="ps-thread-label">&#9733; Thread found</div>
+                <div class="ps-thread-text">You often reflect after connecting with people you love. This thread goes back 3 months.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Features</div>
+        <h2 class="section-title">A journal that thinks with you</h2>
+        <p class="section-desc">Lore combines voice-first journaling with on-device AI that finds meaning across your entries &mdash; all without your data ever leaving your phone.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card"><div class="feature-icon">&#127908;</div><h3>Voice Journaling</h3><p>Speak your thoughts &mdash; Lore transcribes them instantly using on-device speech recognition. No typing required. Your voice is your journal.</p></div>
+        <div class="feature-card"><div class="feature-icon">&#129527;</div><h3>AI Threads</h3><p>Lore's on-device AI finds recurring themes across your entries and weaves them into threads &mdash; the patterns and ideas that define your life.</p></div>
+        <div class="feature-card"><div class="feature-icon">&#128161;</div><h3>Daily Insights</h3><p>Get gentle, private reflections on your entries. Mood patterns, recurring topics, and evolving perspectives &mdash; all processed on your device.</p></div>
+        <div class="feature-card"><div class="feature-icon">&#128274;</div><h3>Truly Private</h3><p>Your journal entries are processed entirely on-device using Apple's Foundation Models framework. Nothing is sent to any server. Ever.</p></div>
+        <div class="feature-card"><div class="feature-icon">&#128214;</div><h3>Life Timeline</h3><p>Browse your entries as a living memoir &mdash; grouped by threads, moods, and moments. Watch your story unfold over weeks and months.</p></div>
+        <div class="feature-card"><div class="feature-icon">&#9729;</div><h3>iCloud Backup</h3><p>Your journal is encrypted and backed up to your private iCloud. Switch devices without losing a single memory.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <section class="section hiw-section" id="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">How It Works</div>
+        <h2 class="section-title">From moment to memoir</h2>
+      </div>
+      <div class="hiw-grid">
+        <div class="hiw-step"><div class="hiw-num">01</div><h3>Speak or type</h3><p>Open Lore anytime and record what's on your mind &mdash; a thought, a conversation, a moment you want to keep.</p></div>
+        <div class="hiw-step"><div class="hiw-num">02</div><h3>AI finds patterns</h3><p>Lore's on-device AI reads across your entries and identifies recurring themes &mdash; threads that connect your moments over time.</p></div>
+        <div class="hiw-step"><div class="hiw-num">03</div><h3>Threads emerge</h3><p>Your life organises itself into named threads: the friendship that grew slowly, the project that consumed you, the question you keep returning to.</p></div>
+        <div class="hiw-step"><div class="hiw-num">04</div><h3>Your story, yours</h3><p>Browse, reflect, and understand yourself better. Everything stays on your device &mdash; your memoir belongs to you.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <section class="section" id="privacy">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Privacy</div>
+        <h2 class="section-title">Private by design, not by policy</h2>
+      </div>
+      <div class="privacy-block">
+        <div>
+          <h3>Your thoughts never leave your iPhone.</h3>
+          <p style="margin-top:14px;">Lore uses Apple's on-device Foundation Models &mdash; the same AI framework powering Apple Intelligence &mdash; to analyse and connect your entries. All processing happens locally on your device. There are no servers, no accounts, no data collection.</p>
+        </div>
+        <div class="privacy-checks">
+          <div class="privacy-check"><div class="pcheck-icon">&#10003;</div><div class="pcheck-text"><h4>No data collected</h4><p>We don't collect personal information, journal entries, or usage data.</p></div></div>
+          <div class="privacy-check"><div class="pcheck-icon">&#10003;</div><div class="pcheck-text"><h4>No tracking</h4><p>Lore does not track you across apps or websites.</p></div></div>
+          <div class="privacy-check"><div class="pcheck-icon">&#10003;</div><div class="pcheck-text"><h4>On-device AI only</h4><p>All AI features run on your iPhone using Apple's Foundation Models framework.</p></div></div>
+          <div class="privacy-check"><div class="pcheck-icon">&#10003;</div><div class="pcheck-text"><h4>iCloud encrypted backup</h4><p>Backups use your private iCloud &mdash; encrypted, and only accessible to you.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <section class="section" id="pricing">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Pricing</div>
+        <h2 class="section-title">Start free. Upgrade when ready.</h2>
+        <p class="section-desc">Lore is free to download and use. Upgrade to Lore Premium for unlimited entries and advanced AI features.</p>
+      </div>
+      <div class="pricing-grid">
+        <div class="price-card">
+          <div class="price-name">Free</div>
+          <div class="price-amount">$0</div>
+          <div class="price-period">Always free</div>
+          <ul class="price-features">
+            <li>Up to 30 entries per month</li>
+            <li>Voice &amp; text journaling</li>
+            <li>Basic thread detection</li>
+            <li>iCloud backup</li>
+          </ul>
+          <a href="https://apps.apple.com/app/id6761324442" target="_blank" rel="noopener" class="btn-price-outline">Download Free</a>
+        </div>
+        <div class="price-card featured">
+          <div class="price-badge">Best Value</div>
+          <div class="price-name">Premium &mdash; Yearly</div>
+          <div class="price-amount">$39 <small>/ year</small></div>
+          <div class="price-period">$3.33 per month &mdash; 3-day free trial</div>
+          <ul class="price-features">
+            <li>Unlimited entries</li>
+            <li>Full AI thread analysis</li>
+            <li>Daily mood insights</li>
+            <li>Advanced AI reflections</li>
+            <li>Priority iCloud sync</li>
+          </ul>
+          <a href="https://apps.apple.com/app/id6761324442" target="_blank" rel="noopener" class="btn-price">Start Free Trial</a>
+        </div>
+      </div>
+      <p class="pricing-note">Monthly plan also available at $4.99/month &mdash; cancel anytime from your iPhone Settings.</p>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container">
+      <h2>Start your life thread today.</h2>
+      <p>Free to download. No account required. Your story begins now.</p>
+      <a href="https://apps.apple.com/app/id6761324442" target="_blank" rel="noopener" class="btn-dark">
+        <svg width="18" height="18" viewBox="0 0 814 1000" fill="currentColor"><path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 790.7 0 663 0 541.8c0-207.5 135.4-317.3 269-317.3 70.1 0 128.4 46.4 172.5 46.4 42.8 0 109.8-49 192.3-49 30.7 0 133.7 2.6 198.3 99zM554.1 158.4c27.1-33.1 45.8-78.7 45.8-124.2 0-6.4-.6-12.9-1.9-18.1-43.4 1.6-95.6 29.2-127 66.5-24.6 27.7-47.5 72.7-47.5 118.9 0 7.1 1.3 14.2 1.9 16.4 2.6.5 6.4.6 10.3.6 38.4 0 86.7-26 118.4-60.1z"/></svg>
+        Download on the App Store
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-logo">Toma<span>.</span></div>
+          <div class="footer-tagline">Lore is built by <a href="https://tomastudio.org" style="color:var(--text-muted);text-decoration:underline;">Toma Studio</a> &mdash; Hong Kong.</div>
+        </div>
+        <div class="footer-links">
+          <a href="#features">Features</a>
+          <a href="#privacy">Privacy</a>
+          <a href="#pricing">Pricing</a>
+          <a href="support">Support</a>
+          <a href="https://tomastudio.org">Studio</a>
+          <a href="mailto:hello@tomastudio.org">Contact</a>
+        </div>
+      </div>
+      <div class="footer-bottom">&copy; 2026 Lore &mdash; TOMA GROUP LIMITED. All Rights Reserved. &nbsp;|&nbsp; <a href="support#privacy" style="color:inherit;">Privacy Policy</a></div>
+    </div>
+  </footer>
+</body>
+</html>
